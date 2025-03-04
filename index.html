@@ -140,9 +140,12 @@
             <span class="logo-text">CYBERSECNOOB TOOLS</span>
         </div>
         <div class="nav-right">
-            <button class="search-btn" data-section="search">
-                <span class="material-icons">search</span>
-            </button>
+            <div class="navbar-search">
+                <input type="text" placeholder="Search files, domains, IPs, or URLs..." aria-label="Search">
+                <button type="submit" class="navbar-search-btn">
+                    <span class="material-icons">search</span>
+                </button>
+            </div>
             <button class="login-btn" data-modal="login-modal">
                 <span class="material-icons">account_circle</span>
             </button>
@@ -459,7 +462,7 @@
                             <input type="checkbox" id="remember-me">
                             Remember me
                         </label>
-                        <button class="forgot-password" data-modal="forgot-password-modal">Forgot password?</button>
+                        <button class="forgot-password link-button" data-modal="forgot-password-modal">Forgot password?</button>
                     </div>
                     <button type="submit" class="login-submit">Sign In</button>
                 </form>
