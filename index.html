@@ -284,53 +284,93 @@
             </div>
             
             <div class="menu-content">
-                <div class="menu-section">
-                    <div class="section-header">
-                        <div class="section-icon">
-                            <span class="material-icons">analytics</span>
+                <div class="menu-sections-wrapper">
+                    <div class="menu-section">
+                        <div class="section-header">
+                            <div class="section-icon">
+                                <span class="material-icons">analytics</span>
+                            </div>
+                            <h3>ANALYSIS</h3>
                         </div>
-                        <h3>ANALYSIS</h3>
+                        <div class="menu-items">
+                            <button class="menu-item" data-section="file">
+                                <span class="material-icons">file_upload</span>
+                                File Analysis
+                            </button>
+                            <button class="menu-item" data-section="search">
+                                <span class="material-icons">search</span>
+                                Advanced Search
+                            </button>
+                            <button class="menu-item" data-section="history">
+                                <span class="material-icons">history</span>
+                                Scan History
+                            </button>
+                        </div>
                     </div>
-                    <div class="menu-items">
-                        <button class="menu-item" data-section="file">
-                            <span class="material-icons">file_upload</span>
-                            File Analysis
-                        </button>
-                        <button class="menu-item" data-section="search">
-                            <span class="material-icons">search</span>
-                            Advanced Search
-                        </button>
-                        <button class="menu-item" data-section="history">
-                            <span class="material-icons">history</span>
-                            Scan History
-                        </button>
+
+                    <div class="menu-section">
+                        <div class="section-header">
+                            <div class="section-icon">
+                                <span class="material-icons">people</span>
+                            </div>
+                            <h3>COMMUNITY</h3>
+                        </div>
+                        <div class="menu-items">
+                            <button class="menu-item" data-modal="community-modal">
+                                <span class="material-icons">forum</span>
+                                Community Posts
+                            </button>
+                            <button class="menu-item">
+                                <span class="material-icons">trending_up</span>
+                                Trending Threats
+                            </button>
+                            <button class="menu-item">
+                                <span class="material-icons">security</span>
+                                Security News
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="menu-section">
+                        <div class="section-header">
+                            <div class="section-icon">
+                                <span class="material-icons">account_circle</span>
+                            </div>
+                            <h3>ACCOUNT</h3>
+                        </div>
+                        <div class="menu-items">
+                            <button class="menu-item" data-modal="login-modal">
+                                <span class="material-icons">login</span>
+                                Sign In
+                            </button>
+                            <button class="menu-item" data-modal="register-modal">
+                                <span class="material-icons">person_add</span>
+                                Create Account
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="menu-section">
+                        <div class="section-header">
+                            <div class="section-icon">
+                                <span class="material-icons">help_outline</span>
+                            </div>
+                            <h3>SUPPORT</h3>
+                        </div>
+                        <div class="menu-items">
+                            <button class="menu-item">
+                                <span class="material-icons">help</span>
+                                Help Center
+                            </button>
+                            <button class="menu-item">
+                                <span class="material-icons">contact_support</span>
+                                Contact Us
+                            </button>
+                        </div>
                     </div>
                 </div>
 
-                <div class="menu-section">
-                    <div class="section-header">
-                        <div class="section-icon">
-                            <span class="material-icons">people</span>
-                        </div>
-                        <h3>COMMUNITY</h3>
-                    </div>
-                    <div class="menu-items">
-                        <button class="menu-item" data-modal="community-modal">
-                            <span class="material-icons">forum</span>
-                            Community Posts
-                        </button>
-                        <button class="menu-item">
-                            <span class="material-icons">trending_up</span>
-                            Trending Threats
-                        </button>
-                        <button class="menu-item">
-                            <span class="material-icons">security</span>
-                            Security News
-                        </button>
-                    </div>
-                </div>
-
-                <div class="menu-section">
+                <div class="menu-section credits-section">
                     <div class="section-header">
                         <div class="section-icon">
                             <span class="material-icons">groups</span>
@@ -338,13 +378,10 @@
                         <h3>CREDITS</h3>
                     </div>
                     <div class="menu-items">
-                        <a href="#team" class="menu-item" onclick="document.getElementById('menu-modal').classList.remove('active');">
+                        <a href="#team" class="menu-item" id="team-link" onclick="hideAllModals()">
                             <span class="material-icons">people</span>
                             Team
                         </a>
-                        <div class="credits-info">
-                            Made with <span class="material-icons" style="color: #ff4444; font-size: 1rem;">favorite</span> by CyberSecNoob Team
-                        </div>
                     </div>
                 </div>
 
@@ -385,6 +422,121 @@
                         </button>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close">
+                <span class="material-icons">close</span>
+            </button>
+            <div class="login-container">
+                <h2>Sign In</h2>
+                <div class="login-options">
+                    <button class="login-option" id="google-login">
+                        <img src="assets/google-icon.svg" alt="Google" class="provider-icon">
+                        Sign in with Google
+                    </button>
+                    <button class="login-option" id="github-login">
+                        <img src="assets/github-icon.svg" alt="GitHub" class="provider-icon">
+                        Sign in with GitHub
+                    </button>
+                </div>
+                <div class="divider"><span>or</span></div>
+                <form class="login-form" onsubmit="return false;">
+                    <div class="form-group">
+                        <label for="login-email">Email</label>
+                        <input type="email" id="login-email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" placeholder="Enter your password" required>
+                    </div>
+                    <div class="form-actions">
+                        <label class="remember-me">
+                            <input type="checkbox" id="remember-me">
+                            Remember me
+                        </label>
+                        <button class="forgot-password" data-modal="forgot-password-modal">Forgot password?</button>
+                    </div>
+                    <button type="submit" class="login-submit">Sign In</button>
+                </form>
+                <p class="signup-prompt">
+                    Don't have an account? 
+                    <button class="link-button" data-modal="register-modal">Sign Up</button>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="register-modal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close">
+                <span class="material-icons">close</span>
+            </button>
+            <div class="login-container">
+                <h2>Create Account</h2>
+                <div class="login-options">
+                    <button class="login-option" id="google-register">
+                        <img src="assets/google-icon.svg" alt="Google" class="provider-icon">
+                        Sign up with Google
+                    </button>
+                    <button class="login-option" id="github-register">
+                        <img src="assets/github-icon.svg" alt="GitHub" class="provider-icon">
+                        Sign up with GitHub
+                    </button>
+                </div>
+                <div class="divider"><span>or</span></div>
+                <form class="login-form" onsubmit="return false;">
+                    <div class="form-group">
+                        <label for="register-name">Full Name</label>
+                        <input type="text" id="register-name" placeholder="Enter your full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-email">Email</label>
+                        <input type="email" id="register-email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-password">Password</label>
+                        <input type="password" id="register-password" placeholder="Create a password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-confirm-password">Confirm Password</label>
+                        <input type="password" id="register-confirm-password" placeholder="Confirm your password" required>
+                    </div>
+                    <button type="submit" class="login-submit">Create Account</button>
+                </form>
+                <p class="signup-prompt">
+                    Already have an account? 
+                    <button class="link-button" data-modal="login-modal">Sign In</button>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Forgot Password Modal -->
+    <div id="forgot-password-modal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close">
+                <span class="material-icons">close</span>
+            </button>
+            <div class="login-container">
+                <h2>Reset Password</h2>
+                <p style="color: #9DA3B4; margin-bottom: 1.5rem;">Enter your email address and we'll send you instructions to reset your password.</p>
+                <form class="login-form" onsubmit="return false;">
+                    <div class="form-group">
+                        <label for="reset-email">Email</label>
+                        <input type="email" id="reset-email" placeholder="Enter your email" required>
+                    </div>
+                    <button type="submit" class="login-submit">Send Reset Link</button>
+                </form>
+                <p class="signup-prompt">
+                    Remember your password? 
+                    <button class="link-button" data-modal="login-modal">Sign In</button>
+                </p>
             </div>
         </div>
     </div>
