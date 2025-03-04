@@ -1,9 +1,60 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Navbar Search functionality
+    const navbarSearch = document.querySelector('.navbar-search');
+    const navbarSearchInput = navbarSearch?.querySelector('input');
+    const navbarSearchBtn = navbarSearch?.querySelector('.navbar-search-btn');
+
+    if (navbarSearch && navbarSearchInput && navbarSearchBtn) {
+        // Handle search button click
+        navbarSearchBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            handleSearch();
+        });
+
+        // Handle Enter key press
+        navbarSearchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                handleSearch();
+            }
+        });
+
+        function handleSearch() {
+            const query = navbarSearchInput.value.trim();
+            if (query) {
+                // Switch to search section
+                showSection('search');
+                
+                // Set the value in the main search input
+                const mainSearchInput = document.querySelector('#search-section .search-input');
+                if (mainSearchInput) {
+                    mainSearchInput.value = query;
+                }
+                
+                // Clear the navbar search
+                navbarSearchInput.value = '';
+                
+                // Focus the main search input
+                mainSearchInput?.focus();
+            }
+        }
+    }
+
     // Menu Modal
     const menuBtn = document.querySelector('.menu-btn');
     const menuModal = document.getElementById('menu-modal');
     const loginBtn = document.querySelector('.login-btn');
     const loginModal = document.getElementById('login-modal');
+
+    // Login button functionality
+    if (loginBtn && loginModal) {
+        loginBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            hideAllModals();
+            loginModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+    }
     const modalCloseButtons = document.querySelectorAll('.modal-close');
     const modals = document.querySelectorAll('.modal');
     const teamSection = document.getElementById('team');
@@ -28,6 +79,22 @@ document.addEventListener('DOMContentLoaded', function() {
             document.body.style.overflow = 'hidden';
         });
     }
+
+    // Modal navigation buttons (Sign Up, Forgot Password)
+    document.querySelectorAll('.link-button').forEach(button => {
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
+            const modalId = button.getAttribute('data-modal');
+            if (modalId) {
+                hideAllModals();
+                const targetModal = document.getElementById(modalId);
+                if (targetModal) {
+                    targetModal.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                }
+            }
+        });
+    });
 
     // Menu item click handlers
     document.querySelectorAll('.menu-item').forEach(item => {
