@@ -520,6 +520,34 @@
         </div>
     </div>
 
+    <!-- OTP Verification Modal -->
+    <div id="otp-modal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close">
+                <span class="material-icons">close</span>
+            </button>
+            <div class="login-container">
+                <h2>Enter Verification Code</h2>
+                <p style="color: #9DA3B4; margin-bottom: 1.5rem;">Please enter the verification code sent to your email.</p>
+                <form class="login-form" onsubmit="return false;" id="otp-form">
+                    <div class="otp-input-group">
+                        <input type="text" maxlength="1" class="otp-input" required>
+                        <input type="text" maxlength="1" class="otp-input" required>
+                        <input type="text" maxlength="1" class="otp-input" required>
+                        <input type="text" maxlength="1" class="otp-input" required>
+                        <input type="text" maxlength="1" class="otp-input" required>
+                        <input type="text" maxlength="1" class="otp-input" required>
+                    </div>
+                    <p class="resend-otp">
+                        Didn't receive the code? 
+                        <button type="button" class="link-button" id="resend-otp">Resend</button>
+                    </p>
+                    <button type="submit" class="login-submit">Verify</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!-- Forgot Password Modal -->
     <div id="forgot-password-modal" class="modal">
         <div class="modal-content">
