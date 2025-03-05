@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Local Storage Keys
+    const tabs = document.querySelectorAll('.tab'); // Select all tab elements
+    const contentSections = document.querySelectorAll('.content-section'); // Select all content sections
+
     const STORAGE_KEYS = {
         USER: 'user',
         OTP: 'otp'
@@ -83,8 +85,30 @@ document.addEventListener('DOMContentLoaded', function() {
         const firstOtpInput = otpModal.querySelector('.otp-input');
         firstOtpInput?.focus();
         
-        // Simulate sending OTP to email
-        console.log(`OTP sent to ${email}: ${currentOTP}`);
+        // Send OTP via email
+        fetch('http://localhost:3001/send-otp', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: email,
+                otp: currentOTP
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log('Preview URL:', data.previewUrl);
+                alert('OTP has been sent to your email. Please check your inbox.');
+            } else {
+                alert('Failed to send OTP. Please try again.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Failed to send OTP. Please try again.');
+        });
     });
 
     // OTP Input Handlers
@@ -128,10 +152,34 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Resend OTP Handler
     document.getElementById('resend-otp')?.addEventListener('click', () => {
+        const email = document.getElementById('reset-email').value;
         currentOTP = generateOTP();
         localStorage.setItem(STORAGE_KEYS.OTP, currentOTP);
-        console.log(`New OTP: ${currentOTP}`);
-        alert('New OTP has been sent to your email.');
+        
+        // Send new OTP via email
+        fetch('http://localhost:3001/send-otp', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: email,
+                otp: currentOTP
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log('Preview URL:', data.previewUrl);
+                alert('New OTP has been sent to your email. Please check your inbox.');
+            } else {
+                alert('Failed to send OTP. Please try again.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Failed to send OTP. Please try again.');
+        });
     });
 
     // Regular Login Form Handler
@@ -152,69 +200,80 @@ document.addEventListener('DOMContentLoaded', function() {
         handleLoginSuccess(user);
     });
 
-    // Login Button Dropdown
     const loginBtn = document.querySelector('.login-btn');
-    loginBtn?.addEventListener('click', (e) => {
-        if (currentUser) {
-            e.preventDefault();
-            const dropdown = document.createElement('div');
-            dropdown.className = 'login-dropdown';
-            dropdown.innerHTML = `
-                <div class="dropdown-header">
-                    <span class="material-icons">account_circle</span>
-                    <div>
-                        <div class="user-name">${currentUser.name}</div>
-                        <div class="user-email">${currentUser.email}</div>
+    if (loginBtn) {
+        console.log('Login button found, adding event listener.');
+        loginBtn.addEventListener('click', (e) => {
+            if (currentUser) {
+                e.preventDefault();
+                const dropdown = document.createElement('div');
+                dropdown.className = 'login-dropdown';
+                dropdown.innerHTML = `
+                    <div class="dropdown-header">
+                        <span class="material-icons">account_circle</span>
+                        <div>
+                            <div class="user-name">${currentUser.name}</div>
+                            <div class="user-email">${currentUser.email}</div>
+                        </div>
                     </div>
-                </div>
-                <div class="dropdown-divider"></div>
-                <button class="dropdown-item" id="logout-btn">
-                    <span class="material-icons">logout</span>
-                    Sign Out
-                </button>
-            `;
-            
-            // Position the dropdown
-            dropdown.style.position = 'absolute';
-            dropdown.style.top = '100%';
-            dropdown.style.right = '0';
-            
-            // Remove existing dropdown if any
-            document.querySelector('.login-dropdown')?.remove();
-            
-            // Add new dropdown
-            loginBtn.parentElement.appendChild(dropdown);
-            
-            // Add logout handler
-            document.getElementById('logout-btn')?.addEventListener('click', () => {
-                handleLogout();
-                dropdown.remove();
-            });
-            
-            // Close dropdown when clicking outside
-            document.addEventListener('click', function closeDropdown(e) {
-                if (!dropdown.contains(e.target) && !loginBtn.contains(e.target)) {
+                    <div class="dropdown-divider"></div>
+                    <button class="dropdown-item" id="logout-btn">
+                        <span class="material-icons">logout</span>
+                        Sign Out
+                    </button>
+                `;
+                
+                // Position the dropdown
+                dropdown.style.position = 'absolute';
+                dropdown.style.top = '100%';
+                dropdown.style.right = '0';
+                
+                // Remove existing dropdown if any
+                document.querySelector('.login-dropdown')?.remove();
+                
+                // Add new dropdown
+                loginBtn.parentElement.appendChild(dropdown);
+                
+                // Add logout handler
+                document.getElementById('logout-btn')?.addEventListener('click', () => {
+                    handleLogout();
                     dropdown.remove();
-                    document.removeEventListener('click', closeDropdown);
-                }
-            });
-        } else {
-            // Show login modal if not logged in
-            hideAllModals();
-            const loginModal = document.getElementById('login-modal');
-            loginModal.classList.add('active');
-        }
-    });
+                });
+                
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function closeDropdown(e) {
+                    if (!dropdown.contains(e.target) && !loginBtn.contains(e.target)) {
+                        dropdown.remove();
+                        document.removeEventListener('click', closeDropdown);
+                    }
+                });
+            } else {
+                // Show login modal if not logged in
+                hideAllModals();
+                const loginModal = document.getElementById('login-modal');
+                loginModal.classList.add('active');
+            }
+        });
+    }
 
-    // Initialize UI
+    // Hide all modals
+    function hideAllModals() {
+        const modals = document.querySelectorAll('.modal.active');
+        modals.forEach(modal => {
+            modal.classList.remove('active');
+        });
+        overlay.style.display = 'none'; // Hide the overlay
+        document.body.style.overflow = ''; // Reset body overflow
+    }
+
     updateAuthUI();
 
-    // Navbar Search functionality
     const navbarSearch = document.querySelector('.navbar-search');
     const navbarSearchInput = navbarSearch?.querySelector('input');
     const navbarSearchBtn = navbarSearch?.querySelector('.navbar-search-btn');
 
     if (navbarSearch && navbarSearchInput && navbarSearchBtn) {
+        console.log('Navbar search elements found, adding event listeners.');
         // Handle search button click
         navbarSearchBtn.addEventListener('click', (e) => {
             e.preventDefault();
@@ -250,27 +309,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Menu Modal
     const menuBtn = document.querySelector('.menu-btn');
     const menuModal = document.getElementById('menu-modal');
-    const loginModal = document.getElementById('login-modal');
-    const modalCloseButtons = document.querySelectorAll('.modal-close');
-    const modals = document.querySelectorAll('.modal');
-    const teamSection = document.getElementById('team');
-    const overlay = document.querySelector('.overlay');
-    const tabs = document.querySelectorAll('.tabs .tab');
-    const contentSections = document.querySelectorAll('.content-section');
 
-    // Helper function to hide all modals - define this first
-    window.hideAllModals = function() {
-        modals.forEach(modal => {
-            modal.classList.remove('active');
-        });
-        document.body.style.overflow = '';
-    };
-
-    // Menu functionality
     if (menuBtn && menuModal) {
+        console.log('Menu button found, adding event listener.');
         menuBtn.addEventListener('click', (e) => {
             e.preventDefault();
             hideAllModals();
@@ -317,6 +360,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    const modalCloseButtons = document.querySelectorAll('.modal .modal-close'); // Select all modal close buttons
+
     // Modal close buttons
     modalCloseButtons.forEach(button => {
         button.addEventListener('click', (e) => {
@@ -327,6 +372,10 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+
+    const overlay = document.querySelector('.overlay'); // Select the overlay element
+
+const teamSection = document.getElementById('team'); // Define teamSection variable
 
     // Team section functionality
     function hideTeam() {
