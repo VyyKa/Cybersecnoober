@@ -376,6 +376,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const overlay = document.querySelector('.overlay'); // Select the overlay element
 
 const teamSection = document.getElementById('team'); // Define teamSection variable
+console.log('Team section element:', teamSection); // Log the team section element
 
     // Team section functionality
     function hideTeam() {
@@ -392,7 +393,8 @@ const teamSection = document.getElementById('team'); // Define teamSection varia
         teamLink.addEventListener('click', (e) => {
             e.preventDefault();
             hideAllModals();
-            window.location.hash = 'team';
+            window.location.hash = 'team'; // Set the hash to show the team section
+            console.log('Team link clicked, hash set to:', window.location.hash); // Log the hash change
             overlay.style.display = 'block';
             document.body.style.overflow = 'hidden';
         });
@@ -429,6 +431,7 @@ const teamSection = document.getElementById('team'); // Define teamSection varia
 
     // Handle hash change for team section
     window.addEventListener('hashchange', () => {
+        console.log('Hash changed to:', window.location.hash); // Log the hash change
         if (window.location.hash === '#team') {
             hideAllModals();
             overlay.style.display = 'block';
