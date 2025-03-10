@@ -30,7 +30,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Social Login Handlers
     document.getElementById('google-login')?.addEventListener('click', () => {
-        // Simulate Google login
         const user = {
             id: 'google_' + Date.now(),
             name: 'Google User',
@@ -41,7 +40,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     document.getElementById('github-login')?.addEventListener('click', () => {
-        // Simulate GitHub login
         const user = {
             id: 'github_' + Date.now(),
             name: 'GitHub User',
@@ -72,20 +70,16 @@ document.addEventListener('DOMContentLoaded', function() {
         e.preventDefault();
         const email = document.getElementById('reset-email').value;
         
-        // Generate and store OTP
         currentOTP = generateOTP();
         localStorage.setItem(STORAGE_KEYS.OTP, currentOTP);
         
-        // Show OTP Modal
         hideAllModals();
         const otpModal = document.getElementById('otp-modal');
         otpModal.classList.add('active');
         
-        // Focus first OTP input
         const firstOtpInput = otpModal.querySelector('.otp-input');
         firstOtpInput?.focus();
         
-        // Send OTP via email
         fetch('http://localhost:3001/send-otp', {
             method: 'POST',
             headers: {
@@ -99,14 +93,12 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                console.log('Preview URL:', data.previewUrl);
                 alert('OTP has been sent to your email. Please check your inbox.');
             } else {
                 alert('Failed to send OTP. Please try again.');
             }
         })
         .catch(error => {
-            console.error('Error:', error);
             alert('Failed to send OTP. Please try again.');
         });
     });
@@ -135,10 +127,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const storedOTP = localStorage.getItem(STORAGE_KEYS.OTP);
         
         if (enteredOTP === storedOTP) {
-            // Clear OTP from storage
             localStorage.removeItem(STORAGE_KEYS.OTP);
-            
-            // Show success message and redirect to login
             alert('Password reset link has been sent to your email.');
             hideAllModals();
             const loginModal = document.getElementById('login-modal');
@@ -156,7 +145,6 @@ document.addEventListener('DOMContentLoaded', function() {
         currentOTP = generateOTP();
         localStorage.setItem(STORAGE_KEYS.OTP, currentOTP);
         
-        // Send new OTP via email
         fetch('http://localhost:3001/send-otp', {
             method: 'POST',
             headers: {
@@ -170,14 +158,12 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                console.log('Preview URL:', data.previewUrl);
                 alert('New OTP has been sent to your email. Please check your inbox.');
             } else {
                 alert('Failed to send OTP. Please try again.');
             }
         })
         .catch(error => {
-            console.error('Error:', error);
             alert('Failed to send OTP. Please try again.');
         });
     });
@@ -188,9 +174,7 @@ document.addEventListener('DOMContentLoaded', function() {
         e.preventDefault();
         const email = document.getElementById('login-email').value;
         const password = document.getElementById('login-password').value;
-        const rememberMe = document.getElementById('remember-me').checked;
         
-        // Simulate login validation
         const user = {
             id: 'email_' + Date.now(),
             name: email.split('@')[0],
@@ -202,7 +186,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const loginBtn = document.querySelector('.login-btn');
     if (loginBtn) {
-        console.log('Login button found, adding event listener.');
         loginBtn.addEventListener('click', (e) => {
             if (currentUser) {
                 e.preventDefault();
@@ -223,24 +206,18 @@ document.addEventListener('DOMContentLoaded', function() {
                     </button>
                 `;
                 
-                // Position the dropdown
                 dropdown.style.position = 'absolute';
                 dropdown.style.top = '100%';
                 dropdown.style.right = '0';
                 
-                // Remove existing dropdown if any
                 document.querySelector('.login-dropdown')?.remove();
-                
-                // Add new dropdown
                 loginBtn.parentElement.appendChild(dropdown);
                 
-                // Add logout handler
                 document.getElementById('logout-btn')?.addEventListener('click', () => {
                     handleLogout();
                     dropdown.remove();
                 });
                 
-                // Close dropdown when clicking outside
                 document.addEventListener('click', function closeDropdown(e) {
                     if (!dropdown.contains(e.target) && !loginBtn.contains(e.target)) {
                         dropdown.remove();
@@ -248,7 +225,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 });
             } else {
-                // Show login modal if not logged in
                 hideAllModals();
                 const loginModal = document.getElementById('login-modal');
                 loginModal.classList.add('active');
@@ -273,14 +249,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const navbarSearchBtn = navbarSearch?.querySelector('.navbar-search-btn');
 
     if (navbarSearch && navbarSearchInput && navbarSearchBtn) {
-        console.log('Navbar search elements found, adding event listeners.');
-        // Handle search button click
         navbarSearchBtn.addEventListener('click', (e) => {
             e.preventDefault();
             handleSearch();
         });
 
-        // Handle Enter key press
         navbarSearchInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 e.preventDefault();
@@ -291,19 +264,12 @@ document.addEventListener('DOMContentLoaded', function() {
         function handleSearch() {
             const query = navbarSearchInput.value.trim();
             if (query) {
-                // Switch to search section
                 showSection('search');
-                
-                // Set the value in the main search input
                 const mainSearchInput = document.querySelector('#search-section .search-input');
                 if (mainSearchInput) {
                     mainSearchInput.value = query;
                 }
-                
-                // Clear the navbar search
                 navbarSearchInput.value = '';
-                
-                // Focus the main search input
                 mainSearchInput?.focus();
             }
         }
@@ -313,7 +279,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const menuModal = document.getElementById('menu-modal');
 
     if (menuBtn && menuModal) {
-        console.log('Menu button found, adding event listener.');
         menuBtn.addEventListener('click', (e) => {
             e.preventDefault();
             hideAllModals();
@@ -322,7 +287,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Modal navigation buttons (Sign Up, Forgot Password)
     document.querySelectorAll('.link-button').forEach(button => {
         button.addEventListener('click', (e) => {
             e.preventDefault();
@@ -338,12 +302,10 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Menu item click handlers
     document.querySelectorAll('.menu-item').forEach(item => {
         item.addEventListener('click', (e) => {
             const sectionId = item.getAttribute('data-section');
             const modalId = item.getAttribute('data-modal');
-            const href = item.getAttribute('href');
 
             if (sectionId) {
                 e.preventDefault();
@@ -360,9 +322,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    const modalCloseButtons = document.querySelectorAll('.modal .modal-close'); // Select all modal close buttons
+    const modalCloseButtons = document.querySelectorAll('.modal .modal-close');
 
-    // Modal close buttons
     modalCloseButtons.forEach(button => {
         button.addEventListener('click', (e) => {
             e.preventDefault();
@@ -373,10 +334,10 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    const overlay = document.querySelector('.overlay'); // Select the overlay element
+    const overlay = document.querySelector('.overlay');
 
-const teamSection = document.getElementById('team'); // Define teamSection variable
-console.log('Team section element:', teamSection); // Log the team section element
+    const teamSection = document.getElementById('team'); // Define teamSection variable
+    console.log('Team section element:', teamSection); // Log the team section element
 
     // Team section functionality
     function hideTeam() {
@@ -397,6 +358,12 @@ console.log('Team section element:', teamSection); // Log the team section eleme
             console.log('Team link clicked, hash set to:', window.location.hash); // Log the hash change
             overlay.style.display = 'block';
             document.body.style.overflow = 'hidden';
+            
+            // Show the team section explicitly
+            const teamSection = document.getElementById('team');
+            if (teamSection) {
+                teamSection.style.display = 'block'; // Ensure the team section is visible
+            }
         });
     }
 
@@ -457,3 +424,4 @@ console.log('Team section element:', teamSection); // Log the team section eleme
     // Initialize with default section
     showSection('file');
 });
+</environment_details>
